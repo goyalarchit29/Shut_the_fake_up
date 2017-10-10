@@ -7,6 +7,7 @@ package com.example.android.hackbvp;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,20 +18,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static com.example.android.hackbvp.R.id.rel;
+
 public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObject> mDataset;
-    private static MyClickListener myClickListener;
+    private int id=-1;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View
-            .OnClickListener {
+             {
         TextView label;
         TextView dateTime;
-
-        int clickId=-1;
+                 Button relButton;
+                 Button irelButton;
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
@@ -38,41 +40,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             dateTime = (TextView) itemView.findViewById(R.id.description);
             relButton=(Button)itemView.findViewById(R.id.rel);
             irelButton=(Button)itemView.findViewById(R.id.irre);
-            itemView.setOnClickListener(this);
-
-            relButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickId=itemView.getId();
-                    Log.i("Archit","clicked on relevant button of:"+clickId);
-                    final Dialog fbDialogue = new Dialog(,android.R.style.Theme_Black_NoTitleBar);
-                    fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
-                    fbDialogue.setContentView(R.layout.dialogue);
-                    fbDialogue.setCancelable(true);
-                    fbDialogue.show();
-                }
-            });
-
-            irelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickId=itemView.getId();
-                    Log.i("Archit","clicked on Irrelevant button of:"+clickId);
-                }
-            });
-
-            Log.i(LOG_TAG, "Adding Listener");
-            //itemView.setOnClickListener(this)
         }
-
-        @Override
-        public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
-        }
-    }
-
-    public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
     }
 
     public MyRecyclerViewAdapter(ArrayList<DataObject> myDataset) {
@@ -90,9 +58,23 @@ public class MyRecyclerViewAdapter extends RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(DataObjectHolder holder, final int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.dateTime.setText(mDataset.get(position).getmText2());
+        holder.relButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("Archit","clicked on relevant button of:"+position);
+                MainActivity.openbottomsheet();
+            }
+        });
+        holder.irelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("Archit","clicked on relevant button of:"+position);
+                MainActivity.openbottomsheet();
+            }
+        });
     }
 
     public void addItem(DataObject dataObj, int index) {
@@ -108,9 +90,5 @@ public class MyRecyclerViewAdapter extends RecyclerView
     @Override
     public int getItemCount() {
         return mDataset.size();
-    }
-
-    public interface MyClickListener {
-        public void onItemClick(int position, View v);
     }
 }
