@@ -1,19 +1,24 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:cardView="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:cardElevation="6dp"
+    android:cardCornerRadius="6dp"
+    android:background="#E0F7FA"
+    android:layout_margin="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:cardView="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#E0F7FA">
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:background="#E0F7FA"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
             />
@@ -26,6 +31,7 @@
             android:maxLines="3"
             android:padding="8dp"
             android:text="title"
+            android:background="#B2EBF2"
             android:textColor="#222"
             android:textStyle="bold"
             android:textSize="22dp" />
@@ -36,37 +42,34 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:maxLines="3"
+            android:background="#B2EBF2"
             android:padding="8dp"
             android:text="description"
             android:textColor="#666"
             android:textSize="14dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/description">
-
             <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Relevant"
-                android:background="@color/cardview_light_background"
+                android:padding="4dp"
+                android:focused="true"
+                android:hapticFeedbackEnabled="true"
+                android:background="#B2EBF2"
                 android:layout_below="@+id/description"
                 android:id="@+id/rel"/>
 
             <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="4dp"
                 android:layout_toRightOf="@+id/rel"
                 android:layout_below="@+id/description"
-                android:background="@color/cardview_light_background"
+                android:focused="true"
+                android:hapticFeedbackEnabled="true"
+                android:background="#B2EBF2"
                 android:text="Irrelevant"
                 android:id="@+id/irre"/>
-
-        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

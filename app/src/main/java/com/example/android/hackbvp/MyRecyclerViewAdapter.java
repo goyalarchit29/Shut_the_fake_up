@@ -212,14 +212,15 @@ public class MyRecyclerViewAdapter extends RecyclerView
             TextView text1 = (TextView) dialog.findViewById(R.id.text1);
             TextView text2 = (TextView) dialog.findViewById(R.id.text2);
             TextView text3 = (TextView) dialog.findViewById(R.id.text3);
-            text1.setText("%YES: "+yes);
-            text2.setText("%NO: "+no);
-            text3.setText("%CONFIDENCE: "+confidence);
+            text1.setText(yes+"% Relevant");
+            text2.setText(no+"% Irrelevant");
+            text3.setText("Confidence: "+confidence+"%");
             //text.setText("Android custom dialog example!");
 
+            dialog.getWindow().getAttributes().windowAnimations = R.style.CustomAnimations_slide;
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.show();
             Window window = dialog.getWindow();
-            window.setLayout(RecyclerView.LayoutParams.FILL_PARENT, RecyclerView.LayoutParams.FILL_PARENT);
 
             // this is expecting a response code to be sent from your server upon receiving the POST data
         }
