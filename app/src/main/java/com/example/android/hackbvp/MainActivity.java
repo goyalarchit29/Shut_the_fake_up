@@ -1,9 +1,13 @@
 package com.example.android.hackbvp;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +15,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import static java.security.AccessController.getContext;
 
+public class MainActivity extends FragmentActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -23,16 +30,12 @@ public class MainActivity extends AppCompatActivity {
     private Button relButton;
     private Button irelButton;
     private int id=-1;
-    public static BottomSheetBehavior mBottomSheetBehavior1;
+    //public static BottomSheetBehavior mBottomSheetBehavior1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        View bottomSheet = findViewById(R.id.bottom_sheet1);
-        mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
-        mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -92,12 +95,14 @@ public class MainActivity extends AppCompatActivity {
         return results;
     }
 
-    public static void openbottomsheet(){
-        if(mBottomSheetBehavior1.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
-        else {
-            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
-    }
+    /*public static void openDialogue(){
+        final Dialog dialog = new Dialog()
+        dialog.setContentView(R.layout.dialogue);
+        dialog.setTitle("Title...");
+
+        // set the custom dialog components - text, image and button
+        TextView text = (TextView) dialog.findViewById(R.id.text1);
+        //text.setText("Android custom dialog example!");
+        dialog.show();
+    }*/
 }

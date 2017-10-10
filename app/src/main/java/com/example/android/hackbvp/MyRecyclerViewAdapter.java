@@ -4,10 +4,13 @@ package com.example.android.hackbvp;
  * Created by archi on 10-10-2017.
  */
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,14 +68,14 @@ public class MyRecyclerViewAdapter extends RecyclerView
             @Override
             public void onClick(View view) {
                 Log.i("Archit","clicked on relevant button of:"+position);
-                MainActivity.openbottomsheet();
+                //MainActivity.openDialogue();
             }
         });
         holder.irelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i("Archit","clicked on relevant button of:"+position);
-                MainActivity.openbottomsheet();
+                //MainActivity.openDialogue();
             }
         });
     }

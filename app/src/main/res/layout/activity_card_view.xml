@@ -41,20 +41,32 @@
             android:textColor="#666"
             android:textSize="14dp" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Relevant"
-            android:layout_below="@+id/description"
-            android:id="@+id/rel"/>
+            android:orientation="horizontal"
+            android:layout_below="@+id/description">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/rel"
-            android:layout_below="@+id/description"
-            android:text="Irrelevant"
-            android:id="@+id/irre"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Relevant"
+                android:background="@color/cardview_light_background"
+                android:layout_below="@+id/description"
+                android:id="@+id/rel"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/rel"
+                android:layout_below="@+id/description"
+                android:background="@color/cardview_light_background"
+                android:text="Irrelevant"
+                android:id="@+id/irre"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
