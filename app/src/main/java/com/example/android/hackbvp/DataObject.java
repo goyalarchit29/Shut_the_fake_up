@@ -7,10 +7,16 @@ package com.example.android.hackbvp;
 public class DataObject {
     private String mText1;
     private String mText2;
+    private String mImage;
+    private String mid;
+    //private String mText3;
 
-    DataObject (String text1, String text2){
+    DataObject (String text1, String text2,String image,String id){
         mText1 = text1;
         mText2 = text2;
+        mImage = image;
+        mid=id;
+        //mText3 = text3;
     }
 
     public String getmText1() {
@@ -28,4 +34,25 @@ public class DataObject {
     public void setmText2(String mText2) {
         this.mText2 = mText2;
     }
+
+    //public String getmText3() { return mText3;}
+
+    //public void setmText3(String mText3) {this.mText3=mText3;}
+
+    public void setmImage(String mImage) {
+        this.mImage = mImage;
+    }
+
+    public String getmImage() {
+        return mImage;
+    }
+
+    public void setmid(String mid) {
+        this.mid = mid;
+    }
+
+    public String getmid() {
+        return mid;
+    }
+
 }
