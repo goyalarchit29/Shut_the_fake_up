@@ -169,7 +169,7 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(ArrayList<DataObject> result) {
             super.onPostExecute(result);
             Log.e("ARCHIT", result.toString());
-            mAdapter = new MyRecyclerViewAdapter(result);
+            mAdapter = new MyRecyclerViewAdapter(MainActivity.this,result);
             mRecyclerView.setAdapter(mAdapter);// this is expecting a response code to be sent from your server upon receiving the POST data
         }
     }

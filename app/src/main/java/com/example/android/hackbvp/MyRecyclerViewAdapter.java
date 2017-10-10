@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +39,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static android.R.string.no;
+import static android.R.string.yes;
 import static com.example.android.hackbvp.R.id.rel;
 import static java.lang.System.load;
 
@@ -46,8 +49,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObject> mDataset;
-    private int id=-1;
     private Bitmap bmp=null;
+    public Context context;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
              {
@@ -67,7 +70,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
         }
     }
 
-    public MyRecyclerViewAdapter(ArrayList<DataObject> myDataset) {
+    public MyRecyclerViewAdapter(Context c ,ArrayList<DataObject> myDataset) {
+        context=c ;
         mDataset = myDataset;
     }
 
@@ -89,9 +93,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.label.setText(mDataset.get(position).getmText1());
         holder.dateTime.setText(mDataset.get(position).getmText2());
 
-        Context context=getContext();
-
-        Picasso.with(getApplicationContext()).load(mDataset.get(position).getmImage()).into(holder.image);
+        Picasso.with(context).load(mDataset.get(position).getmImage()).into(holder.image);
 
         holder.relButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +189,39 @@ public class MyRecyclerViewAdapter extends RecyclerView
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.e("ARCHIT", result); // this is expecting a response code to be sent from your server upon receiving the POST data
+            Log.e("ARCHIT", result);
+            String id="";
+            String yes="";
+            String no="";
+            String confidence="";
+            try {
+                JSONObject jobj=new JSONObject(result);
+                id=jobj.getString("id");
+                yes=jobj.getString("yes");
+                no=jobj.getString("no");
+                confidence=jobj.getString("confidence");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            final Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.dialogue);
+            dialog.setTitle("Title...");
+
+            // set the custom dialog components - text, image and button
+            TextView text1 = (TextView) dialog.findViewById(R.id.text1);
+            TextView text2 = (TextView) dialog.findViewById(R.id.text2);
+            TextView text3 = (TextView) dialog.findViewById(R.id.text3);
+            text1.setText("%YES: "+yes);
+            text2.setText("%NO: "+no);
+            text3.setText("%CONFIDENCE: "+confidence);
+            //text.setText("Android custom dialog example!");
+
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setLayout(RecyclerView.LayoutParams.FILL_PARENT, RecyclerView.LayoutParams.FILL_PARENT);
+
+            // this is expecting a response code to be sent from your server upon receiving the POST data
         }
     }
 
