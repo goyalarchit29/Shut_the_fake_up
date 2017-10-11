@@ -1,0 +1,23 @@
+$("#votes<%= @id %>").html(function(index,text){
+	 return parseInt(text)+(1) ;
+	
+
+}) ;
+
+//$("#yes-no<%= @id %>").stopImmediatePropagation() ;
+
+$("#yes-no<%= @id %>").remove() ;
+//$("#parent").append("<div id='page_number'> You are watching 5th object out of 100 </div>");
+
+//$("outer<%= @id %>").prepend("<div> You are watching 5th object out of 100 </div>");
+
+
+// alert("VOTE SUBMITTED !! ")
+
+noty({
+	text: 'VOTE SUBMITTED !!',
+	type: 'success',
+	timeout: 2000
+});
+
+

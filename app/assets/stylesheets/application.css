@@ -1,0 +1,95 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+.fbclass {
+	background-color: #4267b2 ;
+	height : 70px ;
+	margin: 0px ;
+
+
+}
+.logo {
+		color: white ;
+		    padding-left: 45%;
+    font-size: 30px;
+    
+	}
+
+	body {
+		background-color: #e9ebee ; 
+	}
+
+#title {
+    background-color: aqua;
+    font-size: 27px;
+    font-family: fantasy;
+    padding-left: 23px;
+    color : #365899 ;
+}	
+
+#description {
+    background-color: #d0e4f5 ;
+     
+    padding-top: 11%;
+    font-size: 19px;
+    padding: 68px;
+
+}
+.votesclass {
+	color: white ; background-color: red ;
+}
+#votes {
+   padding-left: 85%;
+   font-size: 27px;
+
+}
+
+#image {
+
+}
+
+#votes_id {
+	font-size: 35px;
+}
+
+.r_ir_class {
+	    font-size: 27px ;
+}
+
+#yes-no {
+	padding : 2px ;
+	 
+	 margin-right: 0px ;
+	 padding-top: 3% ;
+	     width: 100px ;
+}
+
+#yes {
+	background-color: #55fb22 ;
+	width: 40px ;
+
+}
+#no {
+	background-color: red ;
+	width: 40px ;
+}
+
+#outer {
+	background-color: white ;
+	display: flex ;
+	flex-direction: row ;
+	flex-wrap: nowrap ;
+}

@@ -1,0 +1,116 @@
+<form id="contactForm1" action="http://192.168.43.210:5000/getconf" method="GET">
+    <!-- Form input fields here (do not forget your name attributes). -->
+    POST NEWS HERE KNOW AI RESULT :<br><input type="text" name="headline"> 
+
+    <input type="submit" name="submit">
+</form>
+
+<div id="mynews"> 
+
+</div>
+
+
+<h1>#Trending news</h1>
+
+<% @data.each do |i| %>
+
+
+<div id="title"> 
+<%= i.title %>
+</div>
+<br>
+<div id="outer" >
+<div id="image">
+<%= image_tag i.avatar_file_name %>
+</div>
+
+<div id="description">
+<%= i.description %>
+</div>
+
+
+
+</div>
+<div id="yes-no<%= i.id %>" class="r_ir_class" >
+	<span> Please give your answer : </span>
+	<span id="yes">
+
+	<%= link_to "RELEVANT NEWS",  news_vote_path(i.id) , id: "yes#{i.id}" , remote: true , method: :post %>
+	</span>
+	&nbsp; &nbsp; &nbsp; &nbsp; 
+	<span id="no">
+		<%= link_to "IRRELEVANT NEWS",  news_devote_path(i.id) , remote: true , method: :post %>
+	</span>
+
+</div>
+
+
+
+<div id="votes_id">
+VOTES :
+<span id="votes<%= i.id %>" style="color: white ; background-color: red "> 
+<%= i.votes %> 
+</span>
+</div>
+
+<br> 
+<br>
+<br> 
+<br>
+
+<% end %>
+
+<script type="text/javascript">
+    var frm = $('#contactForm1');
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+
+       var x = $.ajax({
+        url: 'http://192.168.43.210:5000/getconf',
+        type: 'GET',
+        data: frm.serialize() , 
+        success: function (response) {
+            alert(response) ;
+            window.location = news_index_path ;
+        },
+        error: function () {
+            alert("error");
+        }, crossdomain: true ,
+    }); 
+
+    var parsed_data = JSON.parse(x.responseText); 
+
+    $('#mynews').html(parsed_data.maxconflink) ;
+
+
+</script>
+
+<script type="text/javascript">
+    var frm = $('#contactForm1');
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+
+       var x = $.ajax({
+        url: 'http://192.168.43.210:5000/getconf',
+        type: 'GET',
+        data: frm.serialize() , 
+        async: false ,
+        success: function (response) {
+            alert("hiiiiii") ;
+            // window.location.href = dat.redirect ;
+        },
+        error: function () {
+            alert("error") ;
+        }, 
+    }); 
+
+    var parsed_data = JSON.parse(x.responseText); 
+
+    $('#mynews').html(parsed_data.maxconflink) ;
+
+
+</script>
