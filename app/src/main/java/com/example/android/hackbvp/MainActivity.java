@@ -1,21 +1,47 @@
 package com.example.android.hackbvp;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static java.security.AccessController.getContext;
 
+public class MainActivity extends FragmentActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -23,23 +49,32 @@ public class MainActivity extends AppCompatActivity {
     private Button relButton;
     private Button irelButton;
     private int id=-1;
-    public static BottomSheetBehavior mBottomSheetBehavior1;
+    //private AVLoadingIndicatorView avi;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //public static ArrayList results = new ArrayList<DataObject>();
+    //public static BottomSheetBehavior mBottomSheetBehavior1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        View bottomSheet = findViewById(R.id.bottom_sheet1);
-        mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
-        mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
+
+        //avi=(AVLoadingIndicatorView)findViewById(R.id.prog);
+        //startAnim();
+        new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
+        //stopAnim();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+            });
     }
 
     @Override
@@ -82,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }); */
     }
 
-    private ArrayList<DataObject> getDataSet() {
+    /*private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
         for (int index = 0; index < 20; index++) {
             DataObject obj = new DataObject("Some Primary Text " + index,
@@ -90,14 +125,139 @@ public class MainActivity extends AppCompatActivity {
             results.add(index, obj);
         }
         return results;
+    }*/
+
+    /*public static void openDialogue(){
+        final Dialog dialog = new Dialog()
+        dialog.setContentView(R.layout.dialogue);
+        dialog.setTitle("Title...");
+
+        // set the custom dialog components - text, image and button
+        TextView text = (TextView) dialog.findViewById(R.id.text1);
+        //text.setText("Android custom dialog example!");
+        dialog.show();
+    }*/
+
+    private class SendDeviceDetails extends AsyncTask<String, Void, ArrayList<DataObject>> {
+
+        @Override
+        protected ArrayList<DataObject> doInBackground(String... params) {
+
+            String jsonResponse = "";
+
+            HttpURLConnection httpURLConnection = null;
+            InputStream inputStream = null;
+            try {
+
+                httpURLConnection = (HttpURLConnection) new URL(params[0]).openConnection();
+                httpURLConnection.setReadTimeout(10000 /* milliseconds */);
+                httpURLConnection.setConnectTimeout(15000 /* milliseconds */);
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.connect();
+
+                if (httpURLConnection.getResponseCode() == 200) {
+                    inputStream = httpURLConnection.getInputStream();
+                    jsonResponse = readFromStream(inputStream);
+                } else {
+                    Log.e(LOG_TAG, "Error response code: " + httpURLConnection.getResponseCode());
+                }
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            } finally {
+                if (httpURLConnection != null) {
+                    httpURLConnection.disconnect();
+                }
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            ArrayList<DataObject> results = extractFeatureFromJson(jsonResponse);
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<DataObject> result) {
+            super.onPostExecute(result);
+            Log.e("ARCHIT", result.toString());
+            mAdapter = new MyRecyclerViewAdapter(MainActivity.this,result);
+            mRecyclerView.setAdapter(mAdapter);// this is expecting a response code to be sent from your server upon receiving the POST data
+        }
     }
 
-    public static void openbottomsheet(){
-        if(mBottomSheetBehavior1.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
+        private String readFromStream(InputStream inputStream) throws IOException {
+            StringBuilder output = new StringBuilder();
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                String line = reader.readLine();
+                while (line != null) {
+                    output.append(line);
+                    line = reader.readLine();
+                }
+            }
+            return output.toString();
         }
-        else {
-            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        private ArrayList<DataObject> extractFeatureFromJson(String earthquakeJSON) {
+            // If the JSON string is empty or null, then return early.
+            if (TextUtils.isEmpty(earthquakeJSON)) {
+                return null;
+            }
+
+            try {
+                JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
+                JSONArray baseArray = baseJsonResponse.getJSONArray("news_items");
+                ArrayList results = new ArrayList<DataObject>();
+                int size = baseArray.length();
+                for (int i = 0; i < size; i++) {
+                    JSONObject news = baseArray.getJSONObject(i);
+                    String heading = news.getString("heading");
+                    String passage = news.getString("passage");
+                    String author = news.getString("author");
+                    String website = news.getString("website");
+                    String image_link = news.getString("image_link");
+                    String id=news.getString("id");
+
+                    URL url = null;
+                    try {
+                        url = new URL(image_link);
+                    } catch (MalformedURLException exception) {
+                        Log.e(LOG_TAG, "Error with creating URL", exception);
+                    }
+
+
+
+                    Log.v("heading", heading);
+                    Log.v("passage", passage);
+                    //Log.v("heading",heading);
+                    //Log.v("heading",heading);
+                    //Log.v("heading",heading);
+
+                    DataObject obj = new DataObject(heading, passage,image_link,id);
+                    Log.d("obj", obj.toString());
+                    results.add(obj);
+
+                }
+                return results;
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
+            }
+            return null;
         }
+
+    /*void startAnim(){
+        avi.show();
+        // or avi.smoothToShow();
     }
+
+    void stopAnim(){
+        avi.hide();
+        // or avi.smoothToHide();
+    }*/
 }
