@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +49,8 @@ public class MainActivity extends FragmentActivity {
     private Button relButton;
     private Button irelButton;
     private int id=-1;
+    private AVLoadingIndicatorView avi;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     //public static ArrayList results = new ArrayList<DataObject>();
     //public static BottomSheetBehavior mBottomSheetBehavior1;
 
@@ -53,13 +58,23 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
-
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        avi=(AVLoadingIndicatorView)findViewById(R.id.prog);
+        startAnim();
+        new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
+        stopAnim();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+            });
     }
 
     @Override
@@ -235,4 +250,14 @@ public class MainActivity extends FragmentActivity {
             }
             return null;
         }
+
+    void startAnim(){
+        avi.show();
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim(){
+        avi.hide();
+        // or avi.smoothToHide();
+    }
 }

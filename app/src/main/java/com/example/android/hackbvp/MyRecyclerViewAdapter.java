@@ -109,7 +109,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 }
 
                 new MyRecyclerViewAdapter.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/submit/",jobj.toString());
-
+                holder.relButton.setEnabled(false);
+                holder.irelButton.setEnabled(false);
             }
         });
         holder.irelButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +127,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 }
 
                 new MyRecyclerViewAdapter.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/submit/",jobj.toString());
-
+                holder.irelButton.setEnabled(false);
+                holder.relButton.setEnabled(false);
             }
         });
     }
@@ -214,7 +216,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             TextView text3 = (TextView) dialog.findViewById(R.id.text3);
             text1.setText(yes+"% Relevant");
             text2.setText(no+"% Irrelevant");
-            text3.setText("Confidence: "+confidence+"%");
+            text3.setText("AI Confidence: "+confidence+"%");
             //text.setText("Android custom dialog example!");
 
             dialog.getWindow().getAttributes().windowAnimations = R.style.CustomAnimations_slide;
