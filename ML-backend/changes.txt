@@ -1,0 +1,10 @@
+=========7/09/17=========
+Added api.py , get_sources.py, run.py 
+Support for obtaining all sources from Newsapi api.
+Support for adding new api keys.
+=========<date>=========
+=========<date>=========
+=========<date>=========
+=========<date>=========
+=========<date>=========
+Add more.
