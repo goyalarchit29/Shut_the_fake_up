@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity {
     private Button relButton;
     private Button irelButton;
     private int id=-1;
-    private AVLoadingIndicatorView avi;
+    //private AVLoadingIndicatorView avi;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     //public static ArrayList results = new ArrayList<DataObject>();
     //public static BottomSheetBehavior mBottomSheetBehavior1;
@@ -64,10 +64,10 @@ public class MainActivity extends FragmentActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        avi=(AVLoadingIndicatorView)findViewById(R.id.prog);
-        startAnim();
+        //avi=(AVLoadingIndicatorView)findViewById(R.id.prog);
+        //startAnim();
         new MainActivity.SendDeviceDetails().execute("https://ae24c3f0.ngrok.io/interact/news_item/","Heya!! there");
-        stopAnim();
+        //stopAnim();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -251,7 +251,7 @@ public class MainActivity extends FragmentActivity {
             return null;
         }
 
-    void startAnim(){
+    /*void startAnim(){
         avi.show();
         // or avi.smoothToShow();
     }
@@ -259,5 +259,5 @@ public class MainActivity extends FragmentActivity {
     void stopAnim(){
         avi.hide();
         // or avi.smoothToHide();
-    }
+    }*/
 }
