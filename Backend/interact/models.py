@@ -12,12 +12,11 @@ class news_item(models.Model):
 	author=models.CharField(max_length=200,default="rowling")
 	website=models.CharField(max_length=200,default="rowling")
 	image_link=models.CharField(max_length=200,default="rowling")
+	confidence=models.FloatField(default=0)
+	yes=models.IntegerField(default=0)
+	no=models.IntegerField(default=0)
 
-class AI(models.Model):
-	confidence=models.FloatField()
-
-class DB(models.Model):
-	yes=models.IntegerField()
-	no=models.IntegerField()
+class state(models.Model):
+	story_no=models.IntegerField(default=0)
 
 # Create your models here.
