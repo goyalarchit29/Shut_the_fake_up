@@ -94,6 +94,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.dateTime.setText(mDataset.get(position).getmText2());
 
         Picasso.with(context).load(mDataset.get(position).getmImage()).into(holder.image);
+        holder.irelButton.setEnabled(true);
+        holder.relButton.setEnabled(true);
 
         holder.relButton.setOnClickListener(new View.OnClickListener() {
             @Override
