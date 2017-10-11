@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="CustomAnimations"/>
+
+    <!-- Sliding animation -->
+    <style name="CustomAnimations.slide">
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <!-- Grow animation -->
+    <style name="CustomAnimations.grow">
+        <item name="@android:windowEnterAnimation">@anim/grow_in</item>
+        <item name="@android:windowExitAnimation">@anim/grow_out</item>
+    </style>
+
+</resources>
